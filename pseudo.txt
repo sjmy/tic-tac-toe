@@ -1,0 +1,52 @@
+Gameboard object
+    - board array comprised of 3 rows and 3 columns
+        - create with a nested loop
+        - example:
+            - [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+            - board[row][column]
+    - getBoard()
+        - returns the current board
+    - dropMarker()
+        - places marker on the board (player parameter?)
+        - does this check to see if the space is empty?
+    - printBoard()
+        - prints to console, may not need this when UI is created
+    - return { getBoard, dropMarker, printBoard }
+        - returns object that rest of app can interact with
+
+Cell object
+    - let value = 0 (maybe "E" for empty? 0 and O will be confusing)
+    - addMarker = (playerMarker) => {
+        value = playerMarker;
+    }
+    - getValue = () => value;
+    - return { addMarker, getValue }
+
+Player object
+    - name
+    - marker
+
+GameController object
+    - controls flow and state of the game's turns
+    - checks if there is a winner
+    - parameters
+        - playerOneName
+        - playerTwoName
+    - const board = Gameboard()
+    - const players = [{ name: playerOneName, marker: "X" }, { name: playerTwoName, marker: "O" }]
+    - activePlayer()?
+        - logic to figure out who's turn it is
+
+ScreenController object
+    - contains a GameController object
+    - interacts with the DOM
+    - updateScreen()
+        - clears the screen
+        - gets the state of the board
+        - gets the active player
+        - draws the board
+            - each cell has a data-attribute of column (value is the index of the cell in its row) so when a click happens we know which cell it is
+        - cells are buttons
+    - clickHandler()
+        - handles click event
+        - sends the cell info to the game so a round can be played
