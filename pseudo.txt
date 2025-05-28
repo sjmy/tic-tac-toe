@@ -1,43 +1,60 @@
 Gameboard object
+    - IIFE
     - board array comprised of 3 rows and 3 columns
         - create with a nested loop
+        - rows are an empty array []
+        - populate rows with Cell objects
         - example:
-            - [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-            - board[row][column]
+            - [[Cell(), Cell(), Cell()], [Cell(), Cell(), Cell()], [Cell(), Cell(), Cell()]]
     - getBoard()
         - returns the current board
-    - dropMarker()
-        - places marker on the board (player parameter?)
-        - does this check to see if the space is empty?
+    - dropMarker(playerMarker, cellValue)
+        - checks to see if the space is empty ("E") (Cell.getValue()?)
+        - if cell is empty:
+            - call cellObject.addMarker(playerMarker) to fill the cell
+        - if cell is already marked ("X" || "O"):
+            - console.log("That cell is taken!")
     - printBoard()
         - prints to console, may not need this when UI is created
     - return { getBoard, dropMarker, printBoard }
         - returns object that rest of app can interact with
+        - the board cells are not directly accessible
 
 Cell object
-    - let value = 0 (maybe "E" for empty? 0 and O will be confusing)
+    - only ever called by Gameboard object
+    - let value = "E" ("E" for empty as using 0 and O will be confusing)
     - addMarker = (playerMarker) => {
         value = playerMarker;
     }
     - getValue = () => value;
     - return { addMarker, getValue }
 
-Player object
-    - name
-    - marker
-
 GameController object
+    - IIFE
     - controls flow and state of the game's turns
     - checks if there is a winner
     - parameters
         - playerOneName
         - playerTwoName
+
     - const board = Gameboard()
     - const players = [{ name: playerOneName, marker: "X" }, { name: playerTwoName, marker: "O" }]
-    - activePlayer()?
-        - logic to figure out who's turn it is
+    - let activePlayer = players[0]
+        - playerOne goes first by default
+    - switchPlayerTurn = () => {
+        activePlayer = activePlayer === players[0] ? players[1] : players[0];
+    };
+    - getActivePlayer = () => activePlayer
+    - printNewRound = () => {
+        - board.printBoard()
+        - console.log(`It's ${activePlayer}'s turn.`)
+    };
+    - playRound = (cellIndex) {
+        - board.dropMarker(gameController.getActivePlayer().marker, cellIndex)
+    };
 
 ScreenController object
+    - IIFE
     - contains a GameController object
     - interacts with the DOM
     - updateScreen()
@@ -45,7 +62,7 @@ ScreenController object
         - gets the state of the board
         - gets the active player
         - draws the board
-            - each cell has a data-attribute of column (value is the index of the cell in its row) so when a click happens we know which cell it is
+            - each cell has a data-attribute of cellIndex (value is the index of the cell in its row) so when a click happens we know which cell it is
         - cells are buttons
     - clickHandler()
         - handles click event
