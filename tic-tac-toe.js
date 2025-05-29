@@ -17,6 +17,11 @@ const board = (function Gameboard() {
     // Return current board
     const getBoard = () => board;
 
+    // Return rows and columns. Used in GameController() to check for a winner
+    const getRows = () => rows;
+
+    const getColumns = () => columns;
+
     // Get the cell values, put them in an array, display in the console
     const printBoard = () => {
         const readableBoard = board.map((row) => row.map((cell) => cell.getValue()));
@@ -35,7 +40,7 @@ const board = (function Gameboard() {
         };
     };
 
-    return { getBoard, placeMarker, printBoard };
+    return { getBoard, placeMarker, printBoard, getRows, getColumns };
 })();
 
 // Cell object
@@ -89,11 +94,26 @@ const game = (function GameController(
             return;
         };
 
+        game.checkWinner();
         game.switchPlayerTurn();
         game.printCurrentState();
     };
 
-    return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound };
+    const checkWinner = () => {
+        for (r = 0; r < board.getRows(); r++) {
+            for (c = 0; c < board.getColumns(); c++) {
+                const cell = board.getBoard()[r][c];
+                console.log(cell.getValue());
+                
+                // Need to call continue if a match isn't found, break completely if no more possible matches or a winner
+                // if (cell.getValue() == "X" && board.getBoard()[r][c + 1].getValue() == "X" && board.getBoard()[r][c + 2].getValue() == "X") {
+                //     console.log("Player X wins!");
+                // };
+            };
+        };
+    };
+
+    return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound, checkWinner };
 })();
 
 game.printCurrentState();
