@@ -9,14 +9,13 @@ Gameboard object
     - getBoard()
         - returns the current board
     - dropMarker(playerMarker, cellValue)
+        - called by GameController in the playRound function
         - checks to see if the space is empty ("E") (Cell.getValue()?)
         - if cell is empty:
             - call cellObject.addMarker(playerMarker) to fill the cell
         - if cell is already marked ("X" || "O"):
             - console.log("That cell is taken!")
-    - printBoard()
-        - prints to console, may not need this when UI is created
-    - return { getBoard, dropMarker, printBoard }
+    - return { getBoard, dropMarker }
         - returns object that rest of app can interact with
         - the board cells are not directly accessible
 
@@ -37,7 +36,6 @@ GameController object
         - playerOneName
         - playerTwoName
 
-    - const board = Gameboard()
     - const players = [{ name: playerOneName, marker: "X" }, { name: playerTwoName, marker: "O" }]
     - let activePlayer = players[0]
         - playerOne goes first by default
@@ -49,8 +47,8 @@ GameController object
         - board.printBoard()
         - console.log(`It's ${activePlayer}'s turn.`)
     };
-    - playRound = (cellIndex) {
-        - board.dropMarker(gameController.getActivePlayer().marker, cellIndex)
+    - playRound = (cellValue) {
+        - board.dropMarker(gameController.getActivePlayer().marker, cellValue)
     };
 
 ScreenController object
@@ -62,7 +60,9 @@ ScreenController object
         - gets the state of the board
         - gets the active player
         - draws the board
-            - each cell has a data-attribute of cellIndex (value is the index of the cell in its row) so when a click happens we know which cell it is
+            - each cell has a data-attribute of cellValue (value is the content of the cell) so when a click happens we know which cell it is
+                - not sure this is correct. need to know which cell was clicked and what to send back to program
+                    - row, column, and value? then access the board cell, check value, drop marker (or not)
         - cells are buttons
     - clickHandler()
         - handles click event
