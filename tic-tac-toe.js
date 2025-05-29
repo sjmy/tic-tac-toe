@@ -99,16 +99,25 @@ const game = (function GameController(
         game.printCurrentState();
     };
 
+    // Need to call continue if a match isn't found, break completely if no more possible matches or a winner
+    // There are eight potential winning combinations
+    // Check each combo on the board for three Xs or Os
+    // If true, that player wins (activePlayer if checkWinner is played after every turn)
+    // Is there a way to check all combinations within these two loops? Multiple winStrings?
+    // Return activePlayer?
+    // Once a winner is verified, how to end the game and stop user input until reset? How to reset??
     const checkWinner = () => {
         for (r = 0; r < board.getRows(); r++) {
+            const row = board.getBoard()[r];
+            let winString = "";
+
             for (c = 0; c < board.getColumns(); c++) {
-                const cell = board.getBoard()[r][c];
-                console.log(cell.getValue());
-                
-                // Need to call continue if a match isn't found, break completely if no more possible matches or a winner
-                // if (cell.getValue() == "X" && board.getBoard()[r][c + 1].getValue() == "X" && board.getBoard()[r][c + 2].getValue() == "X") {
-                //     console.log("Player X wins!");
-                // };
+                winString += row[c].getValue();
+            };
+
+            if (winString == "XXX" || winString == "OOO") {
+                console.log(`${game.getActivePlayer().name} wins!`);
+                return;
             };
         };
     };
