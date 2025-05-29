@@ -23,17 +23,19 @@ const board = (function Gameboard() {
         console.table(readableBoard);
     };
 
-    // Drop the current player's marker if the cell is empty
-    // called by GameController in the playRound function
-    const dropMarker = (marker, cell) => {
+    // Place the current player's marker if the cell is empty
+    // Called by GameController in the playRound function
+    const placeMarker = (marker, cell) => {
         if (cell.getValue() == "E") {
-            cell.addMarker(marker);
+            cell.changeMarker(marker);
+            return true;
         } else {
             console.log("That cell is taken!");
+            return false;
         };
     };
 
-    return { getBoard, dropMarker, printBoard };
+    return { getBoard, placeMarker, printBoard };
 })();
 
 // Cell object
@@ -41,22 +43,18 @@ function Cell() {
     // "E" for empty. Didn't want to use 0 due to confusion with O
     let value = "E";
 
-    const addMarker = (playerMarker) => {
+    const changeMarker = (playerMarker) => {
         value = playerMarker;
     };
 
     const getValue = () => value;
 
-    return { addMarker, getValue };
+    return { changeMarker, getValue };
 };
 
 // GameController object
 //     - controls flow and state of the game's turns
 //     - checks if there is a winner
-
-//     - playRound = (cellValue) {
-//         - board.dropMarker(gameController.getActivePlayer().marker, cellValue)
-//     };
 
 // GameController object
 // IIME as only one game is needed.
@@ -78,10 +76,24 @@ const game = (function GameController(
 
     const printCurrentState = () => {
         board.printBoard();
-        console.log(`It's ${activePlayer.name}'s turn.`)
+        console.log(`It's ${getActivePlayer().name}'s turn.`);
     };
 
-    return { getActivePlayer, switchPlayerTurn, printCurrentState };
+    // Takes the row and column from the cell the player clicked on, finds the cell, attempts to place the marker
+    const playRound = (row, column) => {
+        const cell = board.getBoard()[row][column];
+
+        // If the cell has been chosen already, exit
+        if (!board.placeMarker(getActivePlayer().marker, cell)) {
+            game.printCurrentState();
+            return;
+        };
+
+        game.switchPlayerTurn();
+        game.printCurrentState();
+    };
+
+    return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound };
 })();
 
 game.printCurrentState();

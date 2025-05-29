@@ -48,7 +48,7 @@ GameController object
         - console.log(`It's ${activePlayer}'s turn.`)
     };
     - playRound = (cellValue) {
-        - board.dropMarker(gameController.getActivePlayer().marker, cellValue)
+        - board.dropMarker(activePlayer.marker, cellValue)
     };
 
 ScreenController object
