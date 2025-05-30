@@ -1,0 +1,75 @@
+:root {
+  line-height: 1.5;
+}
+
+html {
+    font-family: sans-serif;
+}
+
+body {
+    height: 60vh;
+    margin: 0;
+    align-content: center;
+    justify-items: center;
+}
+
+h1, h2, h3, h4, h5, figure, p, ol, ul {
+  margin: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-rows: 100px 100px 100px;
+    grid-template-columns: 100px 100px 100px;
+    gap: 4px;
+    padding: 12px;
+    border: 2px solid rgb(71, 71, 71);
+}
+
+.square0-0 {
+    border-bottom: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+.square0-1 {
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+.square0-2 {
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+}
+
+.square1-0 {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+.square1-1 {
+    border: 1px solid grey;;
+}
+
+.square1-2 {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+}
+
+.square2-0 {
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+.square2-1 {
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+.square2-2 {
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+}

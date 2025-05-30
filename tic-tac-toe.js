@@ -73,11 +73,11 @@ const game = (function GameController(
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
+        console.log(`It's ${getActivePlayer().name}'s turn.`);
     };
 
     const printCurrentState = () => {
         board.printBoard();
-        console.log(`It's ${getActivePlayer().name}'s turn.`);
     };
 
     // Takes the row and column from the cell the player clicked on, finds the cell, attempts to place the marker
@@ -98,6 +98,13 @@ const game = (function GameController(
             game.printCurrentState();
             return;
         };
+
+        if (game.checkTie()) {
+            console.log("It's a tie!");
+            game.printCurrentState();
+            return;
+        };
+
         game.switchPlayerTurn();
         game.printCurrentState();
     };
@@ -157,7 +164,24 @@ const game = (function GameController(
         };
     };
 
-    return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound, checkWinner };
+    // Check for empty spots. If none, it's a tie
+    const checkTie = () => {   
+        for (r = 0; r < board.getRows(); r++) {
+            const row = board.getBoard()[r];
+
+            for (c = 0; c < board.getColumns(); c++) {
+                const cell = row[c].getValue();
+
+                if (cell == "E") {
+                    return false;
+                };
+            };
+        };
+
+        return true;
+    };
+    
+    return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound, checkWinner, checkTie };
 })();
 
 // ScreenController object
