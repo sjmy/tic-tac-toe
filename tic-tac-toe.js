@@ -200,9 +200,6 @@ const game = (function GameController(
 //         - builds initial table? grid?
 //         - can act as a reset when necessary
 //         - updateScreen() can call this and build from it every turn
-//     - clickHandler()
-//         - handles click event
-//         - sends the cell info to the game so a round can be played
 
 // ScreenController object
 // IIFE as only one screen in needed
@@ -216,10 +213,22 @@ const screen = (function ScreenController() {
     };
 
     const clickHandler = () => {
+        const allSquares = document.querySelectorAll("button");
 
+        for (n = 0; n < allSquares.length; n++) {
+            const square = allSquares[n];
+
+            square.addEventListener("click", (e) => {
+                const row = e.target.dataset.rowcol[0];
+                const col = e.target.dataset.rowcol[1];
+
+                game.playRound(row, col);
+            });
+        };
     };
 
     return { resetScreen, updateScreen, clickHandler };
 })();
 
 game.printCurrentState();
+screen.clickHandler();
