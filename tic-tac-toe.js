@@ -58,10 +58,6 @@ function Cell() {
 };
 
 // GameController object
-//     - controls flow and state of the game's turns
-//     - checks if there is a winner
-
-// GameController object
 // IIME as only one game is needed.
 const game = (function GameController(
     playerXName = "Player X",
@@ -94,30 +90,70 @@ const game = (function GameController(
             return;
         };
 
-        game.checkWinner();
+        // We have a winner!
+        // Display the victor, print the board, end input
+        // Still need to implement a game reset
+        if (game.checkWinner()) {
+            console.log(`${game.getActivePlayer().name} wins!`);
+            game.printCurrentState();
+            return;
+        };
         game.switchPlayerTurn();
         game.printCurrentState();
     };
 
-    // Need to call continue if a match isn't found, break completely if no more possible matches or a winner
-    // There are eight potential winning combinations
-    // Check each combo on the board for three Xs or Os
-    // If true, that player wins (activePlayer if checkWinner is played after every turn)
-    // Is there a way to check all combinations within these two loops? Multiple winStrings?
-    // Return activePlayer?
-    // Once a winner is verified, how to end the game and stop user input until reset? How to reset??
+    // There are eight potential winning combinations:
+    // Each row, each column, and two diagonals
+    // Checks for each of those winners at the appropriate points
     const checkWinner = () => {
         for (r = 0; r < board.getRows(); r++) {
             const row = board.getBoard()[r];
-            let winString = "";
+            let rowWin = "";
 
+            // Check for row winners
             for (c = 0; c < board.getColumns(); c++) {
-                winString += row[c].getValue();
+                let colWin = "";
+                rowWin += row[c].getValue();
+
+                // If we're in the first row, pause to check for column winners
+                if (r == 0) {
+                    let diagWin = "";
+                    colWin += row[c].getValue();
+
+                    for (n = 1; n < board.getRows(); n++) {
+                        const rowTemp = board.getBoard()[n];
+                        colWin += rowTemp[c].getValue();
+                    };
+
+                    // If we're also in the first or third column, pause to check for a diagonal winner
+                    if (c == 0) {
+                        diagWin += row[c].getValue();
+
+                        for (colTemp = 1; colTemp < board.getRows(); colTemp++) {
+                            const rowTemp = board.getBoard()[colTemp];
+                            diagWin += rowTemp[colTemp].getValue();
+                        };
+                    } else if (c == board.getColumns() - 1) {
+                        diagWin += row[c].getValue();
+
+                        // One of the diagonal checks has to have the row and column incrementing opposite each other
+                        // Using n to increment the rows while colTemp decrements the columns
+                        let n = 0;
+                        for (colTemp = board.getColumns() - 2; colTemp >= 0; colTemp--) {
+                            n++;
+                            const rowTemp = board.getBoard()[n];
+                            diagWin += rowTemp[colTemp].getValue();
+                        };
+                    };
+
+                    if (colWin == "XXX" || colWin == "OOO" || diagWin == "XXX" || diagWin == "OOO") {
+                        return true;
+                    };
+                };
             };
 
-            if (winString == "XXX" || winString == "OOO") {
-                console.log(`${game.getActivePlayer().name} wins!`);
-                return;
+            if (rowWin == "XXX" || rowWin == "OOO") {
+                return true;
             };
         };
     };
