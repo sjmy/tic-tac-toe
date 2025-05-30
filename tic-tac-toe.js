@@ -90,8 +90,6 @@ const game = (function GameController(
             return;
         };
 
-        screen.updateScreen();
-
         // We have a winner!
         // Display the victor, print the board, end input
         // Still need to implement a game reset
@@ -192,66 +190,50 @@ const game = (function GameController(
 //     - updateScreen()
 //         - clears the screen
 //         - gets the state of the board
-//         - gets the active player
 //         - draws the board
-//             - each cell has a data-attribute of cellValue (value is the content of the cell) so when a click happens we know which cell it is
-//                 - not sure this is correct. need to know which cell was clicked and what to send back to program
-//                     - row, column, and value? then access the board cell, check value, drop marker (or not)
 //         - cells are buttons
-//     - resetScreen()
-//         - builds initial table? grid?
-//         - can act as a reset when necessary
-//         - updateScreen() can call this and build from it every turn
+//     - start()
+//         - calls updateScreen() to draw the initial board
+//         - starts event listener
+//     - reset()
+//         - do I need this if I have start()?
 
 // ScreenController object
 // IIFE as only one screen in needed
 const screen = (function ScreenController() {
-    const resetScreen = () => {
+    const gridContainer = document.querySelector(".grid-container");
+    
+    function updateScreen() {
+        // Clears the board
+        gridContainer.textContent = "";
 
-    };
-
-    const updateScreen = () => {
-        const allSquares = document.querySelectorAll("button");
-        let cellValues = [];
-
+        // Creates a button for each cell, adds a data-attribute (rowcol), appends the buttons to gridContainer
         for (r = 0; r < board.getRows(); r++) {
             for (c = 0; c < board.getColumns(); c++) {
-                cellValues += board.getBoard()[r][c].getValue();
+                const button = document.createElement("button");
+                button.dataset.rowcol = `${r}${c}`;
+                button.textContent = board.getBoard()[r][c].getValue();
+                gridContainer.appendChild(button);
             };
-        };
-
-        for (n = 0; n < allSquares.length; n++) {
-            const square = allSquares[n];
-            square.textContent = cellValues[n];
         };
     };
 
-    const clickHandler = () => {
-        const allSquares = document.querySelectorAll("button");
-
-        // Currently not working. How to stop click events if game is won or tied? Is screen.clickHandler() called in the wrong place?
-        if (game.checkWinner() || game.checkTie()) {
-            for (n = 0; n < allSquares.length; n++) {
-                const square = allSquares[n];
-                square.disabled = true;
-                return;
-            };
-        };
-
-        for (n = 0; n < allSquares.length; n++) {
-            const square = allSquares[n];
-
-            square.addEventListener("click", (e) => {
-                const row = e.target.dataset.rowcol[0];
-                const col = e.target.dataset.rowcol[1];
-
-                game.playRound(row, col);
-            });
-        };
+    // Gets the row and column from the clicked button, plays round, updates screen
+    function clickHandler(e) {
+        const row = e.target.dataset.rowcol[0];
+        const col = e.target.dataset.rowcol[1];
+        game.playRound(row, col);
+        updateScreen();
     };
 
-    return { resetScreen, updateScreen, clickHandler };
+    // Kicks off the initial screen draw, starts event listener
+    const start = () => {
+        updateScreen();
+        gridContainer.addEventListener("click", clickHandler);
+    };
+
+    return { start };
 })();
 
 game.printCurrentState();
-screen.clickHandler();
+screen.start();

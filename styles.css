@@ -27,58 +27,58 @@ h1, h2, h3, h4, h5, figure, p, ol, ul {
     border: 2px solid rgb(71, 71, 71);
 }
 
-.square0-0 {
-    border-bottom: 1px solid grey;
-    border-right: 1px solid grey;
-}
-
-.square0-1 {
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid grey;
-}
-
-.square0-2 {
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
-}
-
-.square1-0 {
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey;
-    border-right: 1px solid grey;
-}
-
-.square1-1 {
-    border: 1px solid grey;;
-}
-
-.square1-2 {
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
-}
-
-.square2-0 {
-    border-top: 1px solid grey;
-    border-right: 1px solid grey;
-}
-
-.square2-1 {
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid grey;
-}
-
-.square2-2 {
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
-}
-
 button {
     height: 100%;
     width: 100%;
     border: none;
     background-color: inherit;
     color: inherit;
+}
+
+button[data-rowcol="00"] {
+    border-bottom: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+button[data-rowcol="01"] {
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+button[data-rowcol="02"] {
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+}
+
+button[data-rowcol="10"] {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+button[data-rowcol="11"] {
+    border: 1px solid grey;;
+}
+
+button[data-rowcol="12"] {
+    border-top: 1px solid grey;
+    border-bottom: 1px solid grey;
+    border-left: 1px solid grey;
+}
+
+button[data-rowcol="20"] {
+    border-top: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+button[data-rowcol="21"] {
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
+    border-right: 1px solid grey;
+}
+
+button[data-rowcol="22"] {
+    border-top: 1px solid grey;
+    border-left: 1px solid grey;
 }
