@@ -1,5 +1,5 @@
 // Gameboard object
-// IIME as only one board is needed.
+// IIFE as only one board is needed
 const board = (function Gameboard() {
     const board = [];
     const rows = 3;
@@ -58,7 +58,7 @@ function Cell() {
 };
 
 // GameController object
-// IIME as only one game is needed.
+// IIFE as only one game is needed
 const game = (function GameController(
     playerXName = "Player X",
     playerOName = "Player O"
@@ -102,8 +102,7 @@ const game = (function GameController(
         game.printCurrentState();
     };
 
-    // There are eight potential winning combinations:
-    // Each row, each column, and two diagonals
+    // There are eight potential winning combinations: each row, each column, and two diagonals
     // Checks for each of those winners at the appropriate points
     const checkWinner = () => {
         for (r = 0; r < board.getRows(); r++) {
@@ -159,6 +158,44 @@ const game = (function GameController(
     };
 
     return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound, checkWinner };
+})();
+
+// ScreenController object
+//     - interacts with a GameController object (game)
+//     - interacts with the DOM
+//     - updateScreen()
+//         - clears the screen
+//         - gets the state of the board
+//         - gets the active player
+//         - draws the board
+//             - each cell has a data-attribute of cellValue (value is the content of the cell) so when a click happens we know which cell it is
+//                 - not sure this is correct. need to know which cell was clicked and what to send back to program
+//                     - row, column, and value? then access the board cell, check value, drop marker (or not)
+//         - cells are buttons
+//     - resetScreen()
+//         - builds initial table? grid?
+//         - can act as a reset when necessary
+//         - updateScreen() can call this and build from it every turn
+//     - clickHandler()
+//         - handles click event
+//         - sends the cell info to the game so a round can be played
+
+// ScreenController object
+// IIFE as only one screen in needed
+const screen = (function ScreenController() {
+    const resetScreen = () => {
+
+    };
+
+    const updateScreen = () => {
+
+    };
+
+    const clickHandler = () => {
+
+    };
+
+    return { resetScreen, updateScreen, clickHandler };
 })();
 
 game.printCurrentState();
