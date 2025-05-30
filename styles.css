@@ -7,6 +7,8 @@ html {
 }
 
 body {
+    background-color: rgb(17, 17, 17);
+    color: antiquewhite;
     height: 60vh;
     align-content: center;
     justify-items: center;
@@ -78,4 +80,5 @@ button {
     width: 100%;
     border: none;
     background-color: inherit;
+    color: inherit;
 }

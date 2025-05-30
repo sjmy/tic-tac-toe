@@ -90,6 +90,8 @@ const game = (function GameController(
             return;
         };
 
+        screen.updateScreen();
+
         // We have a winner!
         // Display the victor, print the board, end input
         // Still need to implement a game reset
@@ -209,11 +211,32 @@ const screen = (function ScreenController() {
     };
 
     const updateScreen = () => {
+        const allSquares = document.querySelectorAll("button");
+        let cellValues = [];
 
+        for (r = 0; r < board.getRows(); r++) {
+            for (c = 0; c < board.getColumns(); c++) {
+                cellValues += board.getBoard()[r][c].getValue();
+            };
+        };
+
+        for (n = 0; n < allSquares.length; n++) {
+            const square = allSquares[n];
+            square.textContent = cellValues[n];
+        };
     };
 
     const clickHandler = () => {
         const allSquares = document.querySelectorAll("button");
+
+        // Currently not working. How to stop click events if game is won or tied? Is screen.clickHandler() called in the wrong place?
+        if (game.checkWinner() || game.checkTie()) {
+            for (n = 0; n < allSquares.length; n++) {
+                const square = allSquares[n];
+                square.disabled = true;
+                return;
+            };
+        };
 
         for (n = 0; n < allSquares.length; n++) {
             const square = allSquares[n];
