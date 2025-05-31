@@ -83,6 +83,7 @@ const game = (function GameController(
     // Takes the row and column from the cell the player clicked on, finds the cell, attempts to place the marker
     const playRound = (row, column) => {
         const cell = board.getBoard()[row][column];
+        const gridContainer = document.querySelector(".grid-container");
 
         // If the cell has been chosen already, exit
         if (!board.placeMarker(getActivePlayer().marker, cell)) {
@@ -94,19 +95,18 @@ const game = (function GameController(
         // Display the victor, print the board, end input
         // Still need to implement a game reset
         if (game.checkWinner()) {
+            screen.removeEventListener();
             console.log(`${game.getActivePlayer().name} wins!`);
-            game.printCurrentState();
             return;
         };
 
         if (game.checkTie()) {
+            screen.removeEventListener();
             console.log("It's a tie!");
-            game.printCurrentState();
             return;
         };
 
         game.switchPlayerTurn();
-        game.printCurrentState();
     };
 
     // There are eight potential winning combinations: each row, each column, and two diagonals
@@ -185,16 +185,6 @@ const game = (function GameController(
 })();
 
 // ScreenController object
-//     - interacts with a GameController object (game)
-//     - interacts with the DOM
-//     - updateScreen()
-//         - clears the screen
-//         - gets the state of the board
-//         - draws the board
-//         - cells are buttons
-//     - start()
-//         - calls updateScreen() to draw the initial board
-//         - starts event listener
 //     - reset()
 //         - do I need this if I have start()?
 
@@ -219,7 +209,7 @@ const screen = (function ScreenController() {
     };
 
     // Gets the row and column from the clicked button, plays round, updates screen
-    function clickHandler(e) {
+    const clickHandler = (e) => {
         const row = e.target.dataset.rowcol[0];
         const col = e.target.dataset.rowcol[1];
         game.playRound(row, col);
@@ -232,8 +222,11 @@ const screen = (function ScreenController() {
         gridContainer.addEventListener("click", clickHandler);
     };
 
-    return { start };
+    const removeEventListener = () => {
+        gridContainer.removeEventListener("click", clickHandler);
+    };
+
+    return { start, clickHandler, removeEventListener };
 })();
 
-game.printCurrentState();
 screen.start();
