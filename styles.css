@@ -9,7 +9,8 @@ html {
 body {
     background-color: rgb(17, 17, 17);
     color: antiquewhite;
-    height: 60vh;
+    height: 60%;
+    margin-top: 50px;
     align-content: center;
     justify-items: center;
 }
@@ -27,12 +28,13 @@ h1, h2, h3, h4, h5, figure, p, ol, ul {
     border: 2px solid rgb(71, 71, 71);
 }
 
-button {
+.cell {
     height: 100%;
     width: 100%;
     border: none;
     background-color: inherit;
     color: inherit;
+    font-size: 300%;
 }
 
 button[data-rowcol="00"] {
@@ -90,6 +92,13 @@ button[data-rowcol="22"] {
     width: 70vh;
 }
 
+.info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+}
+
 .x,
 .o {
     display: flex;
@@ -99,9 +108,18 @@ button[data-rowcol="22"] {
 
 .actionButton {
     border: 1px solid grey;
+    height: 40px;
     width: 100px;
+    background-color: inherit;
+    color: inherit;
 }
 
 .actionButton:hover {
     background-color: rgb(51, 51, 51);
+}
+
+input {
+    color: inherit;
+    background-color: inherit;
+    border: 1px solid grey;
 }

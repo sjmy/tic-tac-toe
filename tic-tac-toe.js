@@ -37,7 +37,6 @@ const board = (function Gameboard() {
             cell.changeMarker(marker);
             return true;
         } else {
-            console.log("That cell is taken!");
             return false;
         };
     };
@@ -61,17 +60,28 @@ function Cell() {
 
 // GameController object
 // IIFE as only one game is needed
-const game = (function GameController(
-    playerXName = "Player X",
-    playerOName = "Player O"
-) {
+const game = (function GameController() {
     const infoContainer = document.querySelector(".info");
 
     // Create player objects in an array
-    const players = [{name: playerXName, marker: "X"}, {name: playerOName, marker: "O"}];
+    const players = [{name: "", marker: "X"}, {name: "", marker: "O"}];
 
     // X goes first by default
     let activePlayer = players[0];
+
+    // Set the player names from the text input buttons
+    const setPlayerNames = (playerX, playerO) => {
+        if (playerX == "") {
+            playerX = "Player X"
+        };
+
+        if (playerO == "") {
+            playerO = "Player O"
+        };
+
+        players[0].name = playerX;
+        players[1].name = playerO;
+    };
 
     const getActivePlayer = () => activePlayer;
 
@@ -80,6 +90,7 @@ const game = (function GameController(
         infoContainer.textContent = `${getActivePlayer().name}'s turn`;
     };
 
+    // Used this for console debugging
     const printCurrentState = () => {
         board.printBoard();
     };
@@ -90,21 +101,21 @@ const game = (function GameController(
 
         // If the cell has been chosen already, exit
         if (!board.placeMarker(getActivePlayer().marker, cell)) {
-            game.printCurrentState();
+            infoContainer.textContent = "That cell is taken!";
             return;
         };
 
         // We have a winner!
         // Display the victor, print the board, end input
         if (game.checkWinner()) {
-            infoContainer.innerHTML = `${game.getActivePlayer().name} wins!<br>`;
+            infoContainer.textContent = `${game.getActivePlayer().name} wins!`;
             screen.removeEventListener();
             screen.reset();
             return;
         };
 
         if (game.checkTie()) {
-            infoContainer.innerHTML = "It's a tie!<br>";
+            infoContainer.textContent = "It's a tie!";
             screen.removeEventListener();
             screen.reset();
             return;
@@ -185,7 +196,7 @@ const game = (function GameController(
         return true;
     };
     
-    return { getActivePlayer, switchPlayerTurn, printCurrentState, playRound, checkWinner, checkTie };
+    return { setPlayerNames, getActivePlayer, switchPlayerTurn, printCurrentState, playRound, checkWinner, checkTie };
 })();
 
 // ScreenController object
@@ -194,6 +205,8 @@ const screen = (function ScreenController() {
     const gridContainer = document.querySelector(".grid-container");
     const infoContainer = document.querySelector(".info");
     const actionButton = document.createElement("button");
+    const playerX = document.getElementById("player-x");
+    const playerO = document.getElementById("player-o");
     
     function updateScreen() {
         // Clears the board
@@ -203,9 +216,14 @@ const screen = (function ScreenController() {
         for (r = 0; r < board.getRows(); r++) {
             for (c = 0; c < board.getColumns(); c++) {
                 const button = document.createElement("button");
+                button.setAttribute("class", "cell");
                 button.dataset.rowcol = `${r}${c}`;
                 button.textContent = board.getBoard()[r][c].getValue();
                 gridContainer.appendChild(button);
+
+                if (button.textContent == "E") {
+                    button.style.fontSize = 0;
+                };
             };
         };
     };
@@ -218,22 +236,35 @@ const screen = (function ScreenController() {
         updateScreen();
     };
 
+    // Initialize the game
     const initial = () => {
+        // Prep the play button, start the button event listener
         actionButton.setAttribute("class", "actionButton");
         actionButton.textContent = "Play!";
         actionButton.addEventListener("click", start);
         infoContainer.appendChild(actionButton);
+
         board.resetBoard();
         updateScreen();
     };
 
     // Starts event listener
     const start = () => {
-        board.resetBoard();
-        updateScreen();
+        // Set the names from the input values, disable the inputs for the duration of the game
+        game.setPlayerNames(playerX.value, playerO.value);
+        playerX.disabled = true;
+        playerO.disabled = true;
+
+        // Hide the play button, replace it with next turn message
         actionButton.hidden = true;
         infoContainer.textContent = `${game.getActivePlayer().name}'s turn`;
+
+        // Start the game grid event listener
         gridContainer.addEventListener("click", clickHandler);
+
+        board.resetBoard();
+        updateScreen();
+        
     };
 
     // Kills event listener
@@ -241,7 +272,10 @@ const screen = (function ScreenController() {
         gridContainer.removeEventListener("click", clickHandler);
     };
 
+    // Reset the game. Enable the player name inputs. Show the play again button.
     const reset = () => {
+        playerX.disabled = false;
+        playerO.disabled = false;
         infoContainer.appendChild(actionButton);
         actionButton.hidden = false;
         actionButton.textContent = "Play again!";
