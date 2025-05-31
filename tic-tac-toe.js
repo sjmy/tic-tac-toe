@@ -6,11 +6,13 @@ const board = (function Gameboard() {
     const columns = 3;
 
     // Create the board
-    for (r = 0; r < rows; r++) {
-        board[r] = [];
+    const resetBoard = () => {
+        for (r = 0; r < rows; r++) {
+            board[r] = [];
 
-        for (c = 0; c < columns; c++) {
-            board[r].push(Cell());
+            for (c = 0; c < columns; c++) {
+                board[r].push(Cell());
+            };
         };
     };
 
@@ -40,7 +42,7 @@ const board = (function Gameboard() {
         };
     };
 
-    return { getBoard, placeMarker, printBoard, getRows, getColumns };
+    return { getBoard, resetBoard, placeMarker, printBoard, getRows, getColumns };
 })();
 
 // Cell object
@@ -63,6 +65,8 @@ const game = (function GameController(
     playerXName = "Player X",
     playerOName = "Player O"
 ) {
+    const infoContainer = document.querySelector(".info");
+
     // Create player objects in an array
     const players = [{name: playerXName, marker: "X"}, {name: playerOName, marker: "O"}];
 
@@ -73,7 +77,7 @@ const game = (function GameController(
 
     const switchPlayerTurn = () => {
         activePlayer = activePlayer === players[0] ? players[1] : players[0];
-        console.log(`It's ${getActivePlayer().name}'s turn.`);
+        infoContainer.textContent = `${getActivePlayer().name}'s turn`;
     };
 
     const printCurrentState = () => {
@@ -83,7 +87,6 @@ const game = (function GameController(
     // Takes the row and column from the cell the player clicked on, finds the cell, attempts to place the marker
     const playRound = (row, column) => {
         const cell = board.getBoard()[row][column];
-        const gridContainer = document.querySelector(".grid-container");
 
         // If the cell has been chosen already, exit
         if (!board.placeMarker(getActivePlayer().marker, cell)) {
@@ -93,16 +96,17 @@ const game = (function GameController(
 
         // We have a winner!
         // Display the victor, print the board, end input
-        // Still need to implement a game reset
         if (game.checkWinner()) {
+            infoContainer.innerHTML = `${game.getActivePlayer().name} wins!<br>`;
             screen.removeEventListener();
-            console.log(`${game.getActivePlayer().name} wins!`);
+            screen.reset();
             return;
         };
 
         if (game.checkTie()) {
+            infoContainer.innerHTML = "It's a tie!<br>";
             screen.removeEventListener();
-            console.log("It's a tie!");
+            screen.reset();
             return;
         };
 
@@ -185,13 +189,11 @@ const game = (function GameController(
 })();
 
 // ScreenController object
-//     - reset()
-//         - do I need this if I have start()?
-
-// ScreenController object
 // IIFE as only one screen in needed
 const screen = (function ScreenController() {
     const gridContainer = document.querySelector(".grid-container");
+    const infoContainer = document.querySelector(".info");
+    const actionButton = document.createElement("button");
     
     function updateScreen() {
         // Clears the board
@@ -216,17 +218,36 @@ const screen = (function ScreenController() {
         updateScreen();
     };
 
-    // Kicks off the initial screen draw, starts event listener
-    const start = () => {
+    const initial = () => {
+        actionButton.setAttribute("class", "actionButton");
+        actionButton.textContent = "Play!";
+        actionButton.addEventListener("click", start);
+        infoContainer.appendChild(actionButton);
+        board.resetBoard();
         updateScreen();
+    };
+
+    // Starts event listener
+    const start = () => {
+        board.resetBoard();
+        updateScreen();
+        actionButton.hidden = true;
+        infoContainer.textContent = `${game.getActivePlayer().name}'s turn`;
         gridContainer.addEventListener("click", clickHandler);
     };
 
+    // Kills event listener
     const removeEventListener = () => {
         gridContainer.removeEventListener("click", clickHandler);
     };
 
-    return { start, clickHandler, removeEventListener };
+    const reset = () => {
+        infoContainer.appendChild(actionButton);
+        actionButton.hidden = false;
+        actionButton.textContent = "Play again!";
+    };
+
+    return { start, clickHandler, start, initial, removeEventListener, reset };
 })();
 
-screen.start();
+screen.initial();

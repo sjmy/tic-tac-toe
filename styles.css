@@ -58,7 +58,7 @@ button[data-rowcol="10"] {
 }
 
 button[data-rowcol="11"] {
-    border: 1px solid grey;;
+    border: 1px solid grey;
 }
 
 button[data-rowcol="12"] {
@@ -86,7 +86,7 @@ button[data-rowcol="22"] {
 .info-container {
     display: flex;
     justify-content: space-between;
-    margin: 17px;
+    margin: 21px;
     width: 70vh;
 }
 
@@ -95,4 +95,13 @@ button[data-rowcol="22"] {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.actionButton {
+    border: 1px solid grey;
+    width: 100px;
+}
+
+.actionButton:hover {
+    background-color: rgb(51, 51, 51);
 }
