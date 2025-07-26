@@ -3,123 +3,133 @@
 }
 
 html {
-    font-family: sans-serif;
+  font-family: sans-serif;
 }
 
 body {
-    background-color: rgb(17, 17, 17);
-    color: antiquewhite;
-    height: 60%;
-    margin-top: 50px;
-    align-content: center;
-    justify-items: center;
+  background-color: rgb(17, 17, 17);
+  color: antiquewhite;
+  height: 60%;
+  margin-top: 50px;
 }
 
-h1, h2, h3, h4, h5, figure, p, ol, ul {
+h1,
+h2,
+h3,
+h4,
+h5,
+figure,
+p,
+ol,
+ul {
   margin: 0;
+  text-align: center;
 }
 
 .grid-container {
-    display: grid;
-    grid-template-rows: 100px 100px 100px;
-    grid-template-columns: 100px 100px 100px;
-    gap: 4px;
-    padding: 12px;
-    border: 2px solid rgb(71, 71, 71);
+  display: grid;
+  grid-template-rows: 100px 100px 100px;
+  grid-template-columns: 100px 100px 100px;
+  gap: 4px;
+  padding: 12px;
+  border: 2px solid rgb(71, 71, 71);
+  width: fit-content;
+  margin: auto;
 }
 
 .cell {
-    height: 100%;
-    width: 100%;
-    border: none;
-    background-color: inherit;
-    color: inherit;
-    font-size: 300%;
+  height: 100%;
+  width: 100%;
+  border: none;
+  background-color: inherit;
+  color: inherit;
+  font-size: 300%;
 }
 
 button[data-rowcol="00"] {
-    border-bottom: 1px solid grey;
-    border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
 }
 
 button[data-rowcol="01"] {
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
 }
 
 button[data-rowcol="02"] {
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
 }
 
 button[data-rowcol="10"] {
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey;
-    border-right: 1px solid grey;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-right: 1px solid grey;
 }
 
 button[data-rowcol="11"] {
-    border: 1px solid grey;
+  border: 1px solid grey;
 }
 
 button[data-rowcol="12"] {
-    border-top: 1px solid grey;
-    border-bottom: 1px solid grey;
-    border-left: 1px solid grey;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid grey;
+  border-left: 1px solid grey;
 }
 
 button[data-rowcol="20"] {
-    border-top: 1px solid grey;
-    border-right: 1px solid grey;
+  border-top: 1px solid grey;
+  border-right: 1px solid grey;
 }
 
 button[data-rowcol="21"] {
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
-    border-right: 1px solid grey;
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+  border-right: 1px solid grey;
 }
 
 button[data-rowcol="22"] {
-    border-top: 1px solid grey;
-    border-left: 1px solid grey;
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
 }
 
 .info-container {
-    display: flex;
-    justify-content: space-between;
-    margin: 21px;
-    width: 70vh;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  margin-top: 20px;
+  width: 70vh;
 }
 
 .info {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: center;
 }
 
 .x,
 .o {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .actionButton {
-    border: 1px solid grey;
-    height: 40px;
-    width: 100px;
-    background-color: inherit;
-    color: inherit;
+  border: 1px solid grey;
+  height: 40px;
+  width: 100px;
+  background-color: inherit;
+  color: inherit;
 }
 
 .actionButton:hover {
-    background-color: rgb(51, 51, 51);
+  background-color: rgb(51, 51, 51);
 }
 
 input {
-    color: inherit;
-    background-color: inherit;
-    border: 1px solid grey;
+  color: inherit;
+  background-color: inherit;
+  border: 1px solid grey;
 }
